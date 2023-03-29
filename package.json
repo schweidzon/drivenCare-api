@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "joi": "^17.9.1",
+    "nodemon": "^2.0.22",
+    "pg": "^8.10.0",
+    "uuid": "^9.0.0"
+  },
+  "name": "projeto19-drivencare",
+  "description": "",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schweidzon/drivenCare-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/schweidzon/drivenCare-api/issues"
+  },
+  "homepage": "https://github.com/schweidzon/drivenCare-api#readme"
+}
