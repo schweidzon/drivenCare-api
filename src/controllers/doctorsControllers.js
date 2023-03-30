@@ -32,7 +32,6 @@ async function signIn(req, res) {
 
 async function findDoctors(req, res) {
     const { doctorName } = req.body
-    
 
     const { doctorSpecialty } = req.body
 

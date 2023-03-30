@@ -28,6 +28,7 @@ async function signIn({email, password}) {
 }
 
 async function findDoctor(doctorInfo) {
+    console.log(doctorInfo, 'oi')
     if(!doctorInfo) throw new Error("Você precisa mandar alguma informação para procurar um médico")
 
     const {rows} = await doctorsRepository.findDoctor(doctorInfo)
