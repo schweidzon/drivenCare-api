@@ -57,7 +57,7 @@ async function findDoctors(req, res) {
             doctor = await doctorsServices.findDoctor( doctorLocation )
         }
 
-        return res.send({doctor})
+        return res.send(doctor)
 
     } catch (error) {
         return res.status(500).send(error.message)
