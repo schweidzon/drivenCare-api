@@ -30,11 +30,12 @@ async function findDoctor(doctorInfo) {
     return connectionDb.query(`
     SELECT d.name, d.specialty, d.location, array_agg(concat(da.date, ' - ', t.time)) AS available_schedule
     FROM doctors d
-    JOIN doctor_schedule ds ON ds.doctor_id = d.id
-    JOIN times t ON t.id = ds.time_id
+    JOIN doctor_schedule ds ON ds.doctor_id = d.id AND ds.available = true
+    JOIN times t ON t.id = ds.time_id 
     JOIN dates da ON da.id = ds.date_id
-    WHERE name LIKE '%${doctorInfo}%' OR specialty LIKE '%${doctorInfo}%' OR location LIKE '%${doctorInfo}%'
+    WHERE (name LIKE '%${doctorInfo}%' OR specialty LIKE '%${doctorInfo}%' OR location LIKE '%${doctorInfo}%')
     GROUP BY d.id;
+
     `)
 
 }
