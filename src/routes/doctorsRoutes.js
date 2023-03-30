@@ -8,4 +8,6 @@ const doctorsRoutes = Router()
 doctorsRoutes.post("/signup", validateSchema(doctorsSchema),doctorsControllers.create)
 doctorsRoutes.post("/signin", doctorsControllers.signIn)
 
+
+
 export default doctorsRoutes

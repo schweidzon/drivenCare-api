@@ -27,7 +27,17 @@ async function signIn({email, password}) {
 
 }
 
+async function findDoctor(doctorInfo) {
+    if(!doctorInfo) throw new Error("Você precisa mandar alguma informação para procurar um médico")
+
+    const {rows} = await doctorsRepository.findDoctor(doctorInfo)
+
+    return rows
+
+}
+
 export default {
     create,
-    signIn
+    signIn,
+    findDoctor
 }
