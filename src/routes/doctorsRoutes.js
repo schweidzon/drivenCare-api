@@ -5,6 +5,7 @@ import { doctorsSchema } from '../schemas/doctoresSchema.js'
 
 const doctorsRoutes = Router()
 
-doctorsRoutes.post("/sign-in", validateSchema(doctorsSchema),doctorsControllers.create)
+doctorsRoutes.post("/signup", validateSchema(doctorsSchema),doctorsControllers.create)
+doctorsRoutes.post("/signin", doctorsControllers.signIn)
 
 export default doctorsRoutes

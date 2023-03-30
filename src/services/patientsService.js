@@ -6,13 +6,13 @@ async function create({ name, email, password, phone }) {
 
 
 
-    const { rowsCount } = await patientsRepository.findByEmail(email)
-    
-    if (rowsCount) return "Usuário já cadastrado"
+    const { rowCount } = await patientsRepository.findByEmail(email)
 
-    const hashPassword =  await bcrypt.hash(password, 10)
+    if (rowCount) throw new Error("Usuário já cadastrado")
 
-  
+    const hashPassword = await bcrypt.hash(password, 10)
+
+
     await patientsRepository.create({ name, email, password: hashPassword, phone })
 
 

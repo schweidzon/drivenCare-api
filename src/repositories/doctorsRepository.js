@@ -8,15 +8,24 @@ async function findByEmail(email) {
 
 }
 
-async function create({name, email, password, location, specialty}) {
+async function create({name, email, password, location, specialty, crm}) {
     return connectionDb.query(`
-    INSERT INTO doctors (name, email, password, location, specialty)
-    VALUES ($1, $2, $3,$4, $5)
+    INSERT INTO doctors (name, email, password, location, specialty, crm)
+    VALUES ($1, $2, $3,$4, $5, $6)
     
-    `,[name, email, password, location, specialty]);
+    `,[name, email, password, location, specialty, crm]);
+}
+
+async function createSession({token, doctorId}) {
+    return connectionDb.query(`
+    INSERT INTO doctor_sessions (token, doctor_id)
+    VALUES ($1, $2)
+    
+    `, [token, doctorId])
 }
 
 export default {
     findByEmail,
-    create
+    create,
+    createSession
 }
