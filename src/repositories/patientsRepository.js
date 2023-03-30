@@ -15,7 +15,16 @@ async function create({name, email, password, phone}) {
     `,[name, email, password, phone])
 }
 
+async function createSession({token, patientId}) {
+    return connectionDb.query(`
+    INSERT INTO patient_sessions (token, patient_id)
+    VALUES ($1, $2)
+    `, [token, patientId])
+
+}
+
 export default {
     findByEmail,
     create,
+    createSession
 }
