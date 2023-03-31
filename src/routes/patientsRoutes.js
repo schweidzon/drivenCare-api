@@ -10,5 +10,6 @@ const patientsRoutes = Router()
 patientsRoutes.post("/signup", validateSchema(patientsSchema), patientsControllers.create)
 patientsRoutes.post("/signin", patientsControllers.signIn)
 patientsRoutes.get("/", checkBody.checkReqBody, doctorsControllers.findDoctors)
+patientsRoutes.post("/appointments", doctorsControllers.createAppointment)
 
 export default patientsRoutes; 

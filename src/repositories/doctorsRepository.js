@@ -28,7 +28,7 @@ async function findDoctor(doctorInfo) {
     console.log(doctorInfo)
 
     return connectionDb.query(`
-    SELECT d.name, d.specialty, d.location, array_agg(concat(da.date, ' - ', t.time)) AS available_schedule
+    SELECT d.id, d.name, d.specialty, d.location, array_agg(concat(ds.id, ' / ', da.date, ' - ', t.time)) AS available_schedule
     FROM doctors d
     JOIN doctor_schedule ds ON ds.doctor_id = d.id AND ds.available = true
     JOIN times t ON t.id = ds.time_id 
@@ -40,9 +40,24 @@ async function findDoctor(doctorInfo) {
 
 }
 
+async function checkAppointment(appointmentId) {
+    return connectionDb.query(`
+        SELECT * FROM doctor_schedule WHERE id = $1 AND available = $2
+    `,[appointmentId, true])
+}
+
+async function createAppointment(appointmentId) {
+    return connectionDb.query(`
+    UPDATE doctor_schedule SET available = false WHERE id = $1;
+
+    `, [appointmentId])
+}
+
 export default {
     findByEmail,
     create,
     createSession,
-    findDoctor
+    findDoctor,
+    checkAppointment,
+    createAppointment
 }
