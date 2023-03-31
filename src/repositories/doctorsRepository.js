@@ -43,14 +43,16 @@ async function findDoctor(doctorInfo) {
 async function checkAppointment(appointmentId) {
     return connectionDb.query(`
         SELECT * FROM doctor_schedule WHERE id = $1 AND available = $2
-    `,[appointmentId, true])
+    `, [appointmentId, true])
 }
 
-async function createAppointment(appointmentId) {
-    return connectionDb.query(`
-    UPDATE doctor_schedule SET available = false WHERE id = $1;
+async function createAppointment({ appointmentId, patientId, doctorId }) {
 
-    `, [appointmentId])
+    await connectionDb.query(`UPDATE doctor_schedule SET available = false WHERE id = $1`, [appointmentId])
+
+    return connectionDb.query(`   
+    INSERT INTO appointments (patient_id, doctor_id, schedule_id) VALUES ($1, $2, $3)    
+    `, [patientId, doctorId, appointmentId])
 }
 
 export default {

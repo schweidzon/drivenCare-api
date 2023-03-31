@@ -37,11 +37,11 @@ async function findDoctor(doctorInfo) {
 
 }
 
-async function createAppointment(appointmentId) {
+async function createAppointment({appointmentId, patientId, doctorId}) {
     const {rowCount} = await doctorsRepository.checkAppointment(appointmentId)
     if(!rowCount) throw new Error("Esta data não está disponível")
 
-    await doctorsRepository.createAppointment(appointmentId)
+    await doctorsRepository.createAppointment({appointmentId, patientId, doctorId})
     
 
 }

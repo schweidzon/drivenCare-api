@@ -66,10 +66,13 @@ async function findDoctors(req, res) {
 
 
 async function createAppointment(req, res) {
-    const {appointmentId} = req.body
+    const {appointmentId, doctorId} = req.body
+    
+    const patient = res.locals.patient
+   
     try {
 
-        await doctorsServices.createAppointment(appointmentId)
+        await doctorsServices.createAppointment({appointmentId, patientId:patient.id, doctorId})
 
         return res.sendStatus(201)
 
