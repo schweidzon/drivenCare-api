@@ -12,6 +12,7 @@ doctorsRoutes.get("/appointments", authMid.authValidation, doctorsControllers.ch
 doctorsRoutes.put("/appointments/confirm=:id", authMid.authValidation, doctorsControllers.confirmAppointment)
 doctorsRoutes.put("/appointments/cancel=:id", authMid.authValidation, doctorsControllers.cancelAppointment)
 doctorsRoutes.put("/appointments/finish=:id", authMid.authValidation, doctorsControllers.finishAppointment)
+doctorsRoutes.get("/appointments/history", authMid.authValidation, doctorsControllers.checkAppointmentHistory)
 
 
 

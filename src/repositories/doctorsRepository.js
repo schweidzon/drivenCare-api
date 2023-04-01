@@ -119,6 +119,12 @@ async function finishAppointment(id) {
     `,[true, id])
 }
 
+async function checkAppointmentsHistory(id) {
+    return connectionDb.query(`
+    SELECT * FROM appointments WHERE doctor_id = $1 AND done = $2
+    `,[id, true])
+}
+
 
 
 export default {
@@ -135,6 +141,7 @@ export default {
     confirmAppointment,
     cancelAppointment,
     checkIfAppointmentIsDone,
-    finishAppointment
+    finishAppointment,
+    checkAppointmentsHistory
     
 }

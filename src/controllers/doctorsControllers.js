@@ -143,6 +143,20 @@ async function finishAppointment(req, res) {
 
 }
 
+async function checkAppointmentHistory(req, res) {
+    const doctor = res.locals.doctor
+    try {
+
+        const appointments = await doctorsServices.checkAppointmentsHistory(doctor.id)
+
+        return res.send(appointments)
+        
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+
+}
+
 
 export default {
     create,
@@ -152,5 +166,6 @@ export default {
     checkAppointment,
     confirmAppointment,
     cancelAppointment,
-    finishAppointment
+    finishAppointment,
+    checkAppointmentHistory
 }

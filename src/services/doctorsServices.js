@@ -90,6 +90,18 @@ async function finishAppointment(id) {
 
 }
 
+async function checkAppointmentsHistory(id) {
+    const {rows: appointments} = await doctorsRepository.checkAppointmentsHistory(id)
+   
+
+    if(appointments.length === 0) throw new Error("Você não tem nenhuma consulta")
+
+   
+    return appointments
+
+
+}
+
 export default {
     create,
     signIn,
@@ -98,5 +110,6 @@ export default {
     checkAppointments,
     confirmAppointment,
     cancelAppointment,
-    finishAppointment
+    finishAppointment,
+    checkAppointmentsHistory
 }
