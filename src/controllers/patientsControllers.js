@@ -31,7 +31,23 @@ async function signIn(req, res) {
 
 }
 
+async function checkAppointments(req, res) {    
+    const patient = res.locals.patient
+    try {
+
+        const appointments = await patientsService.checkAppointments(patient.id)
+
+
+
+
+        return res.status(200).send(appointments)
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+}
+
 export default {
     create,
-    signIn
+    signIn,
+    checkAppointments
 }

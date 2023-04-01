@@ -38,10 +38,25 @@ async function findById(id) {
     `,[id])
 }
 
+async function checkAppointment(id) {
+    return connectionDb.query(`
+    SELECT a.done, d.name AS doctor_name, d.specialty as doctor_specialty, p.name AS patient_name, dates.date, t.time 
+        FROM appointments a
+        JOIN doctors d ON d.id = a.doctor_id 
+        JOIN patients p ON p.id = a.patient_id
+        JOIN doctor_schedule ds ON ds.id = a.schedule_id
+        JOIN dates ON dates.id = ds.date_id
+        JOIN times t ON t.id = ds.time_id
+        WHERE patient_id = $1 AND a.done = false
+    
+    `, [id])
+}
+
 export default {
     findByEmail,
     create,
     createSession,
     findSessionByToken,
-    findById
+    findById,
+    checkAppointment
 }

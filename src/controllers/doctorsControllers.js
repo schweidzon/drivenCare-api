@@ -83,10 +83,26 @@ async function createAppointment(req, res) {
 
 }
 
+async function checkAppointment(req, res) {
+    const doctor = res.locals.doctor;
+ 
+    try {
+
+        const appointments = await doctorsServices.checkAppointments(doctor.id)
+
+        return res.send(appointments)
+        
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+
+}
+
 
 export default {
     create,
     signIn,
     findDoctors,
-    createAppointment
+    createAppointment,
+    checkAppointment
 }

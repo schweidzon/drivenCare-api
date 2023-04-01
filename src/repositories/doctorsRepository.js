@@ -55,11 +55,43 @@ async function createAppointment({ appointmentId, patientId, doctorId }) {
     `, [patientId, doctorId, appointmentId])
 }
 
+async function findSessionByToken(token) {
+    return connectionDb.query(`
+    SELECT * FROM doctor_sessions WHERE token = $1
+    
+    `,[token])
+
+}
+
+async function findById(id) {
+    return connectionDb.query(`
+    SELECT * FROM doctors WHERE id = $1
+    
+    `,[id])
+}
+
+async function checkDoctorAppointments(id) {
+    return connectionDb.query(`
+    SELECT a.done, d.name AS doctor_name, d.specialty as doctor_specialty , p.name AS patient_name, dates.date, t.time 
+        FROM appointments a
+        JOIN doctors d ON d.id = a.doctor_id 
+        JOIN patients p ON p.id = a.patient_id
+        JOIN doctor_schedule ds ON ds.id = a.schedule_id
+        JOIN dates ON dates.id = ds.date_id
+        JOIN times t ON t.id = ds.time_id
+        WHERE a.doctor_id = $1  AND a.done = false
+     
+    `, [id])
+}
+
 export default {
     findByEmail,
     create,
     createSession,
     findDoctor,
     checkAppointment,
-    createAppointment
+    createAppointment,
+    findSessionByToken,
+    findById,
+    checkDoctorAppointments
 }

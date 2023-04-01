@@ -28,7 +28,17 @@ async function signIn({email, password}) {
 
 }
 
+async function checkAppointments(id) {
+    const {rows: appointments} = await patientsRepository.checkAppointment(id)
+   
+    if(appointments.length === 0 ) throw new Error("Você não tem nenhuma consulta marcada")
+
+
+    return appointments
+}
+
 export default {
     create,
-    signIn
+    signIn,
+    checkAppointments
 }

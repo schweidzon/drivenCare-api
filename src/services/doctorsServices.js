@@ -46,10 +46,21 @@ async function createAppointment({appointmentId, patientId, doctorId}) {
 
 }
 
+async function checkAppointments(id) {
+    const {rows: appointments} = await doctorsRepository.checkDoctorAppointments(id)
+   
+    console.log(appointments)
+    if(appointments.length === 0) throw new Error("Você não tem nenhuma consulta")
+
+   
+    return appointments
+}
+
 
 export default {
     create,
     signIn,
     findDoctor,
-    createAppointment
+    createAppointment,
+    checkAppointments
 }
