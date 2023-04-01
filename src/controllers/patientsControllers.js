@@ -46,8 +46,22 @@ async function checkAppointments(req, res) {
     }
 }
 
+async function checkAppointmentHistory(req, res) {
+    const patient = res.locals.patient
+    try {
+
+        const appointments = await patientsService.checkAppointmentsHistory(patient.id)
+
+
+        return res.status(200).send(appointments)
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+
+}
 export default {
     create,
     signIn,
-    checkAppointments
+    checkAppointments,
+    checkAppointmentHistory
 }

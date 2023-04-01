@@ -73,6 +73,9 @@ async function cancelAppointment(id){
     
     if(!appointment) throw new Error("Esse horário não está marcado")
 
+    const {rows: [done]} = await doctorsRepository.checkIfAppointmentIsDone(id)
+    if(done) throw new Error("Esta consulta já foi finalizada")
+
     await doctorsRepository.cancelAppointment(id)
    
 }

@@ -158,6 +158,7 @@ async function checkAppointmentHistory(req, res) {
 }
 
 
+
 export default {
     create,
     signIn,
@@ -167,5 +168,6 @@ export default {
     confirmAppointment,
     cancelAppointment,
     finishAppointment,
-    checkAppointmentHistory
+    checkAppointmentHistory,
+    
 }

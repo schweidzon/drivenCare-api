@@ -13,32 +13,43 @@ async function create({ name, email, password, phone }) {
 
 }
 
-async function signIn({email, password}) {
-    const {rows: [patient]} = await patientsRepository.findByEmail(email)
-    if(!patient) throw new Error("Incorrect email or password")
+async function signIn({ email, password }) {
+    const { rows: [patient] } = await patientsRepository.findByEmail(email)
+    if (!patient) throw new Error("Incorrect email or password")
 
     const hashPassword = await bcrypt.compare(password, patient.password)
-    if(!hashPassword) throw new Error("Incorrect email or password")
-    
+    if (!hashPassword) throw new Error("Incorrect email or password")
+
     const token = uuidV4()
 
-    await patientsRepository.createSession({token, patientId: patient.id})
+    await patientsRepository.createSession({ token, patientId: patient.id })
 
     return token
 
 }
 
 async function checkAppointments(id) {
-    const {rows: appointments} = await patientsRepository.checkAppointment(id)
-   
-    if(appointments.length === 0 ) throw new Error("Você não tem nenhuma consulta marcada")
+    const { rows: appointments } = await patientsRepository.checkAppointment(id)
+
+    if (appointments.length === 0) throw new Error("Você não tem nenhuma consulta marcada")
 
 
     return appointments
 }
 
+async function checkAppointmentsHistory(id) {
+    const { rows: appointments } = await patientsRepository.checkAppointmentHistory(id)
+
+    if (appointments.length === 0) throw new Error("Você não tem nenhuma consulta finalizada")
+
+
+    return appointments
+
+}
+
 export default {
     create,
     signIn,
-    checkAppointments
+    checkAppointments,
+    checkAppointmentsHistory
 }

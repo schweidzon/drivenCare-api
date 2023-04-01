@@ -13,5 +13,6 @@ patientsRoutes.post("/signin", patientsControllers.signIn)
 patientsRoutes.get("/", checkBody.checkReqBody, doctorsControllers.findDoctors)
 patientsRoutes.post("/appointments", authMid.authValidation ,doctorsControllers.createAppointment)
 patientsRoutes.get("/appointments",  authMid.authValidation, patientsControllers.checkAppointments)
+patientsRoutes.get("/appointments/history", authMid.authValidation ,patientsControllers.checkAppointmentHistory)
 
 export default patientsRoutes; 
