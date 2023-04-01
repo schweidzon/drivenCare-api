@@ -98,11 +98,59 @@ async function checkAppointment(req, res) {
 
 }
 
+async function confirmAppointment(req, res) {
+    const {id} = req.params
+   
+    const doctor = res.locals.doctor;
+    try {
+        await doctorsServices.confirmAppointment(id)
+        return res.status(201).send("Horário confirmado com sucesso")
+        
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+
+}
+
+async function cancelAppointment(req, res) {
+    const {id} = req.params
+   
+    const doctor = res.locals.doctor;
+    try {
+        await doctorsServices.cancelAppointment(id)
+
+        return res.status(204).send("Horário cancelado com sucesso")
+        
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+
+}
+
+async function finishAppointment(req, res) {
+    const {id} = req.params
+
+    try {
+
+        await doctorsServices.finishAppointment(id)
+
+        return res.status(204).send("Consulta finalizada com sucesso!")
+        
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+
+
+}
+
 
 export default {
     create,
     signIn,
     findDoctors,
     createAppointment,
-    checkAppointment
+    checkAppointment,
+    confirmAppointment,
+    cancelAppointment,
+    finishAppointment
 }

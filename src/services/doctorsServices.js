@@ -56,11 +56,47 @@ async function checkAppointments(id) {
     return appointments
 }
 
+async function confirmAppointment(id) {
+    
+    const {rows: [appointment]} = await doctorsRepository.checkIfAppointmentIsAvailable(id)   
+    
+    
+    if(appointment) throw new Error("Esse horário não está disponível")
+
+    await doctorsRepository.confirmAppointment(id)
+   
+
+}
+
+async function cancelAppointment(id){
+    const {rows: [appointment]} = await doctorsRepository.checkIfAppointmentIsAvailable(id)
+    
+    if(!appointment) throw new Error("Esse horário não está marcado")
+
+    await doctorsRepository.cancelAppointment(id)
+   
+}
+
+async function finishAppointment(id) {  
+    const {rows: [confirmed]} = await doctorsRepository.checkIfAppointmentIsAvailable(id)
+    if(!confirmed) throw new Error("Esse consulta não está confirmada")
+
+    const {rows: [done]} = await doctorsRepository.checkIfAppointmentIsDone(id)
+    if(done) throw new Error("Esta consulta já foi finalizada")
+
+    await doctorsRepository.finishAppointment(id)
+    
+
+
+}
 
 export default {
     create,
     signIn,
     findDoctor,
     createAppointment,
-    checkAppointments
+    checkAppointments,
+    confirmAppointment,
+    cancelAppointment,
+    finishAppointment
 }

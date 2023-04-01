@@ -72,7 +72,7 @@ async function findById(id) {
 
 async function checkDoctorAppointments(id) {
     return connectionDb.query(`
-    SELECT a.done, d.name AS doctor_name, d.specialty as doctor_specialty , p.name AS patient_name, dates.date, t.time 
+    SELECT a.id, a.done, a.confirmed, d.name AS doctor_name, d.specialty as doctor_specialty , p.name AS patient_name, dates.date, t.time 
         FROM appointments a
         JOIN doctors d ON d.id = a.doctor_id 
         JOIN patients p ON p.id = a.patient_id
@@ -84,6 +84,43 @@ async function checkDoctorAppointments(id) {
     `, [id])
 }
 
+async function checkIfAppointmentIsAvailable(id) {
+    return connectionDb.query(`
+    SELECT * FROM appointments WHERE id = $1 AND confirmed = $2
+`, [id, true])
+}
+
+async function confirmAppointment(id) {
+    return connectionDb.query(`
+    UPDATE appointments SET confirmed = true WHERE id = $1 
+    
+    `,[id])
+}
+
+async function cancelAppointment(id) {
+    return connectionDb.query(`
+    UPDATE appointments SET confirmed = false WHERE id = $1 
+    
+    `,[id])
+}
+
+async function checkIfAppointmentIsDone( id) {
+    return connectionDb.query(`
+    SELECT * FROM appointments WHERE id = $1 AND done = $2
+    
+    `,[id, true])
+
+}
+
+async function finishAppointment(id) {
+    return connectionDb.query(`
+    UPDATE appointments SET done = $1 WHERE id = $2
+    
+    `,[true, id])
+}
+
+
+
 export default {
     findByEmail,
     create,
@@ -93,5 +130,11 @@ export default {
     createAppointment,
     findSessionByToken,
     findById,
-    checkDoctorAppointments
+    checkDoctorAppointments,
+    checkIfAppointmentIsAvailable,
+    confirmAppointment,
+    cancelAppointment,
+    checkIfAppointmentIsDone,
+    finishAppointment
+    
 }
