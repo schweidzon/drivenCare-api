@@ -10,7 +10,7 @@ const patientsRoutes = Router()
 
 patientsRoutes.post("/signup", validateSchema(patientsSchema), patientsControllers.create)
 patientsRoutes.post("/signin", patientsControllers.signIn)
-patientsRoutes.get("/", checkBody.checkReqBody, doctorsControllers.findDoctors)
+patientsRoutes.get("/", checkBody.checkReqBody, authMid.authValidation,doctorsControllers.findDoctors)
 patientsRoutes.post("/appointments", authMid.authValidation ,doctorsControllers.createAppointment)
 patientsRoutes.get("/appointments",  authMid.authValidation, patientsControllers.checkAppointments)
 patientsRoutes.get("/appointments/history", authMid.authValidation ,patientsControllers.checkAppointmentHistory)

@@ -1,40 +1,65 @@
 import doctorsRepository from "../repositories/doctorsRepository.js";
 import patientsRepository from "../repositories/patientsRepository.js";
+import jwt from 'jsonwebtoken'
 
 async function authValidation(req, res, next) {
     const { authorization, type } = req.headers;
+     
+    const parts = authorization.split(" ")
     
-
-    const token = authorization?.replace("Bearer ", "");
+   
     try {
+        const [schema, token] = parts // descontruindo o array parts que tem "Bearer token"
+
+        if(schema !== "Bearer") throw new Error("Não autorizado")
+
+        if(parts.length !== 2) throw new Error("Não autorizado")
+
+        if(!authorization) throw new Error("Não autorizado")
+
         if (!token) throw new Error("Não autorizado")
+
         if (type === 'patient') {
-            const { rows: [patientSession] } = await patientsRepository.findSessionByToken(token)
 
-            if (!patientSession) throw new Error("Não autorizado")
+            jwt.verify(token, process.env.SECRET, async (error, decoded) => {
+                try {
 
-            const { rows: [patient] } = await patientsRepository.findById(patientSession.patient_id)
-            if (!patient) throw new Error("Usuário não encontrado")
+                    if(error) throw new Error("Não autorizado")
+                 
 
+                    const {rows: [patient]} = await patientsRepository.findById(decoded.id)
 
+                    if(!patient) throw new Error("Não autorizado")
 
-            res.locals.patient = patient
-            next()
+                    res.locals.patient = patient
+                    next()
+
+                    
+                } catch (error) {
+                    return res.status(500).send(error.message);
+                }
+            })
+           
 
         } else {
-            const { rows: [doctorSession] } = await doctorsRepository.findSessionByToken(token)
-        
+             jwt.verify(token, process.env.SECRET, async (error, decoded) => {
+                try {
+                    
+                    if(error) throw new Error("Não autorizado")
+                 
 
-            if (!doctorSession) throw new Error("Não autorizado")
-    
-            const { rows: [doctor] } = await doctorsRepository.findById(doctorSession.doctor_id)
-            
-            if (!doctor) throw new Error("Usuário não encontrado")
-    
-    
-    
-            res.locals.doctor = doctor
-            next()
+                    const {rows: [doctor]} = await doctorsRepository.findById(decoded.id)
+
+                    if(!doctor) throw new Error("Não autorizado")
+
+                    res.locals.doctor = doctor
+                    next()
+
+                    
+                } catch (error) {
+                    return res.status(500).send(error.message);
+                }
+            })
 
         }
 

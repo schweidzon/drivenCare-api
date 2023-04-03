@@ -1,6 +1,7 @@
 import doctorsRepository from "../repositories/doctorsRepository.js"
 import bcrypt from 'bcrypt'
 import {v4 as uuidV4} from 'uuid'
+import jwt from 'jsonwebtoken'
 
 async function create({name, email, password, location, specialty, crm}) {
 
@@ -20,10 +21,9 @@ async function signIn({email, password}) {
     const checkPassword = await bcrypt.compare(password, doctor.password)
     if(!checkPassword) throw new Error("Incorrect email or password")
 
-    const token = uuidV4();
-    await doctorsRepository.createSession({token, doctorId: doctor.id})
-    return token
+    const token = jwt.sign({id: doctor.id}, process.env.SECRET, {expiresIn: 86400})
 
+    return token
 
 }
 
